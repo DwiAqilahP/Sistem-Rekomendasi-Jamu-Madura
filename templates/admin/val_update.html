@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Jamu</title>
+    <!-- Tambahkan link CSS Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+
+    <style>
+        body {
+            background-image: url('../static/home1.png');
+        }
+        table {
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <img src="static/jamu.png" width="50px"><a class="navbar-brand" href="/admin">SIRJaMa ADMIN</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/admin"><i class="fas fa-file-alt"></i> Validasi Insert</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/validasi_up"><i class="fas fa-file-alt"></i> Validasi Update</a>
+                    </li>
+                    {% if 'username' in session %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>    
+  
+    <div class="container mt-4">
+        <!-- Tabel untuk menampilkan data jamu -->
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">ID Validasi Jamu</th>
+                    <th scope="col">ID Jamu</th>
+                    <th scope="col">ID user</th>
+                    <th scope="col">Bukti</th>
+                    <th scope="col">Tanggal</th>
+                    <th scope="col">Nama Jamu</th>
+                    <th scope="col">Khasiat</th>
+                    <th scope="col">Kandungan</th>
+                    <th scope="col">Aturan Minum</th>
+                    <th scope="col">Efek Samping</th>
+                    <th scope="col">Jenis</th>
+                    <th scope="col">Produsen</th>
+                    <th scope="col">Lokasi Pemasaran</th>
+                    <th scope="col">Lokasi Produksi</th>
+                    <th scope="col">Kabupaten</th>
+                    <th scope="col">Perizinan</th>
+                    <th scope="col">Validasii</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in val_update %}
+                <tr>
+                    <td>{{ item.id_validasi_up}}</td>
+                    <td>{{ item.id_jamu}}</td>
+                    <td>{{ item.id_user }}</td>
+                    <td><a href="/static/bukti/{{ item.bukti_up }}" class="btn btn-primary" download>Download</a></td>
+                    <td>{{ item.tgl_masuk_up }}</td>
+                    <td>{{ item.nama_jamu_up }}</td>
+                    <td>{{ item.khasiat_up }}</td>
+                    <td>{{ item.kandungan_up }}</td>
+                    <td>{{ item.aturan_minum_up }}</td>
+                    <td>{{ item.efek_samping_up}}</td>
+                    <td>{{ item.jenis_up}}</td>
+                    <td>{{ item.produsen_up}}</td>
+                    <td>{{ item.lokasi_pemasaran_up}}</td>
+                    <td>{{ item.lokasi_produksi_up}}</td>
+                    <td>{{ item.kabupaten_up}}</td>
+                    <td>{{ item.perizinan_up}}</td>
+                    <td>
+                        <form method="post" action="/validasi_up/{{ item.id_validasi_up }}/iya">
+                            <button type="submit">Iya</button>
+                        </form>
+                        <form method="post" action="/validasi_up/{{ item.id_validasi_up }}/tidak">
+                            <button type="submit">Tidak</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>  
+    </div>
+    
+    <!-- Tambahkan script Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
