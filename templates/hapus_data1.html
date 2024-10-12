@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Data Jamu</title>
+</head>
+<body>
+    <h1>Tambah Data Jamu</h1>
+    
+    <!-- Form untuk menambahkan data jamu -->
+    <form action="/hapus/{{ jamu.ID_JAMU }}" method="post" enctype="multipart/form-data">
+        <p>Menambahkan jamu pada website ini harus berdasarkan bukti !<br>
+        - Jika anda Produsen silahkan masukkan bukti dokumen izin produksi seperti P-IRT, BPOM, Kemenkes <br>
+        - Jika anda Peneliti silahkan masukkan bukti hasil penelitian.</p>
+        <label for="bukti">Masukkan Bukti:</label><br>
+        <input type="file" id="bukti" name="bukti" required><br><br>
+        
+        <input type="submit" value="Hapus">
+    </form>
+</body>
+</html>

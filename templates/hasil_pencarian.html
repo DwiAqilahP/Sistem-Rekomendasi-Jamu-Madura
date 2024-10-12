@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CARI REKOMENDASI JAMU TRADISIONAL MADURA</title>
+    <!-- Tambahkan link CSS Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        body {
+            background-image: url('static/home1.png');
+            
+        }
+        .row1 {
+            text-align: center;
+            padding-top: 0px;
+        }
+        h1 {
+            font-weight: bold;
+            color: white;
+            margin: 20px;
+        }
+        .form-group {
+            position: relative;
+            width: 40%;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <img src="static/jamu.png" width="50px"><a class="navbar-brand" href="/">SIRJaMa</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/database"><i class="fas fa-file-alt"></i> Database Jamu</a>
+                    </li>
+                    {% if 'username' in session %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/diskusi"><i class="fas fa-file-alt"></i> Diskusi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>    
+
+    <div class="container mt-4">
+        <div class="row1">
+            <form action="/" method="POST">
+                <div class="form-group">
+                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                    <input type="text" class="form-control" name="searchInput" id="searchInput" value="{{ cari }}">
+                </div>
+            </form>
+            <!-- <p>idf{{idf}}</p> -->
+            <!-- <p>{{bobot_query}}</p><br> -->
+            <!-- <p>tfidf{{tfidf_preprocessed_query}}</p> -->
+            <div class="col-md-12">
+                <h1 class="text-center">HASIL REKOMENDASI JAMU TRADISIONAL MADURA</h1>
+            </div>
+        </div>
+        <div class="row">
+            {% for result in top_5_results %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="static/jamu.png" class="card-img-top" alt="{{ result[2]['NAMA_JAMU'] }}">
+                        <div class="card-body">
+                            <h4>ID Jamu: {{ result[0].split('_')[-1] }}</h4>
+                            <!-- <p>TF-IDF: {{TFIDF}}</p> -->
+                            <p>Similarity Score: {{ result[1] }}</p>
+                            <h5 class="card-title">JAMU : {{ result[2]['NAMA_JAMU'] }}</h5>
+                            <p class="card-text">{{ result[2]['KHASIAT'] }}</p>
+                            <p class="card-text">{{ result[2]['KANDUNGAN'] }}</p>
+                            <!-- <p class="card-text">{{ result[2]['PREPRO_METADATA'] }}</p> -->
+                            <!-- <p>Bobot Word2Vec:
+                                {{result[3]}}
+                            </p> -->
+                            <!-- <p>Bobot TF-IDF{{result[4]}}</p> -->
+                            <form action="/lihat_detail/{{ result[0].split('_')[-1] }}" method="get">
+                                <button type="submit" class="btn btn-primary">Lihat Detail</button>
+                            </form>
+                            
+                            <!-- <a href="#" class="btn btn-primary">Lihat Detail</a> -->
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

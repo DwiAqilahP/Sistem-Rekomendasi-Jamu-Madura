@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Data Jamu</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('static/home4.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 50px;
+            color: white;
+            font-family: Arial, sans-serif; /* Mengubah font family */
+        }
+        form {
+            max-width: 600px;
+            margin: auto;
+            background-color: rgba(0,0,0,0.7); /* Menambahkan transparansi pada form */
+            padding: 20px;
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Efek bayangan pada teks */
+        }
+        p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        label {
+            font-weight: bold;
+            color: #ffc107; /* Mengubah warna teks label */
+        }
+        input[type="text"], input[type="file"] {
+            background-color: rgba(255, 255, 255, 0.7); /* Menambahkan transparansi pada input */
+            border: none;
+            border-radius: 5px;
+            padding: 8px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        input[type="text"]:focus, input[type="file"]:focus {
+            outline: none;
+            box-shadow: 0 0 5px #ffc107; /* Efek bayangan saat input di-fokuskan */
+        }
+        .btn-primary {
+            background-color: #ffc107; /* Warna latar belakang tombol */
+            border-color: #ffc107; /* Warna border tombol */
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: all 0.3s ease; /* Animasi perubahan warna */
+        }
+        .btn-primary:hover {
+            background-color: #ffca28; /* Warna latar belakang tombol saat dihover */
+            border-color: #ffca28; /* Warna border tombol saat dihover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tambah Data Jamu</h1>
+        <!-- Form untuk menambahkan data jamu -->
+        <form action="/tambah" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <p>Menambahkan jamu pada website ini harus berdasarkan bukti !<br>
+                - Jika anda Produsen silahkan masukkan bukti dokumen izin produksi seperti P-IRT, BPOM, Kemenkes <br>
+                - Jika anda Peneliti silahkan masukkan bukti hasil penelitian.</p>
+            </div>
+            <div class="form-group">
+                <label for="bukti">Masukkan Bukti:</label>
+                <input type="file" class="form-control" id="bukti" name="bukti">
+            </div>
+            <div class="form-group">
+                <label for="nama">Nama Jamu:</label>
+                <input type="text" class="form-control" id="nama_jamu" name="nama_jamu">
+            </div>
+            <div class="form-group">
+                <label for="khasiat">Khasiat:</label>
+                <input type="text" class="form-control" id="khasiat" name="khasiat">
+            </div>
+            <div class="form-group">
+                <label for="kandungan">Kandungan:</label>
+                <input type="text" class="form-control" id="kandungan" name="kandungan">
+            </div>
+            <div class="form-group">
+                <label for="aturan_minum">Aturan Minum:</label>
+                <input type="text" class="form-control" id="aturan_minum" name="aturan_minum">
+            </div>
+            <div class="form-group">
+                <label for="efek_samping">Efek Samping:</label>
+                <input type="text" class="form-control" id="efek_samping" name="efek_samping">
+            </div>
+            <div class="form-group">
+                <label for="jenis">Jenis:</label>
+                <input type="text" class="form-control" id="jenis" name="jenis">
+            </div>
+            <div class="form-group">
+                <label for="produsen">Produsen:</label>
+                <input type="text" class="form-control" id="produsen" name="produsen">
+            </div>
+            <div class="form-group">
+                <label for="lokasi_pemasaran">Lokasi Pemasaran:</label>
+                <input type="text" class="form-control" id="lokasi_pemasaran" name="lokasi_pemasaran">
+            </div>
+            <div class="form-group">
+                <label for="lokasi_produksi">Lokasi Produksi:</label>
+                <input type="text" class="form-control" id="lokasi_produksi" name="lokasi_produksi">
+            </div>
+            <div class="form-group">
+                <label for="kabupaten">Kabupaten:</label>
+                <input type="text" class="form-control" id="kabupaten" name="kabupaten">
+            </div>
+            <div class="form-group">
+                <label for="perizinan">Perizinan:</label>
+                <input type="text" class="form-control" id="perizinan" name="perizinan">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Tambah</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Jamu</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Custom CSS */
+        body {
+            background-image: url('../static/home4.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .row1{
+            padding-top: 0px;
+        }
+        
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <img src="../static/jamu.png" width="50px"><a class="navbar-brand" href="/">SIRJaMa</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="/database"><i class="fas fa-file-alt"></i> Database Jamu</a>
+                    </li>
+                    {% if 'username' in session %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/diskusi"><i class="fas fa-file-alt"></i> Diskusi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row1">
+            <div class="col-md-6">  
+                <form action="/" method="POST">
+                    <div class="form-group">
+                        <button type="submit" class="form-control" name="searchInput" id="searchInput" value="{{ session['cari'] }}">Kembali ke Hasil Rekomendasi</button>
+                    </div>
+                </form>                             
+                <div class="product-container">
+                    <form action="/edit/{{jamu.ID_JAMU}}" method="get" class="mb-3 text-right">
+                        <button type="submit" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</button>
+                    </form>
+                    <h2>{{jamu.NAMA_JAMU}}</h2>
+                    <img src="../static/jamu.png" alt="{{jamu.NAMA_JAMU}}" class="product-img">
+                    <h4 class="mb-4">Khasiat : {{jamu.KHASIAT}}</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>Kandungan :</h4>
+                            <p>{{jamu.KANDUNGAN}}</p>
+                            <h4>Aturan Minum :</h4>
+                            <p>{{jamu.ATURAN_MINUM}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Informasi Tambahan :</h4>
+                            <p><strong>Jenis :</strong> {{jamu.JENIS}}</p>
+                            <p><strong>Produsen :</strong> {{jamu.PRODUSEN}}</p>
+                            <p><strong>Lokasi Pemasaran :</strong> {{jamu.LOKASI_PEMASARAN}}</p>
+                            <p><strong>Kabupaten :</strong> {{jamu.KABUPATEN}}</p>
+                            <p><strong>Perizinan :</strong> {{jamu.PERIZINAN}}</p>
+                        </div>
+                    </div>
+                    <h3>Komentar</h3>
+                        {% if komentar %}
+                            {% for comment in komentar %}
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <p class="card-title"><strong>{{ comment.username }}:</strong> {{ comment.komentar }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>Belum ada komentar untuk jamu ini.</p>
+                        {% endif %}
+                    <form action="/tambah_komentar" method="post">
+                        <div class="form-group">
+                            <label for="komentar">Komentar:</label>
+                            <textarea class="form-control" id="komentar" name="komentar" rows="3"></textarea>
+                        </div>
+                        <input type="hidden" name="id_jamu" value="{{ jamu.ID_JAMU }}">
+                        <button type="submit" class="btn btn-primary">Kirim</button>
+                    </form>
+                
+                </div>
+            </div>
+ 
+            <!-- Bagian untuk menampilkan 5 jamu rekomendasi lainnya -->
+            <div class="col-md-6">
+                <div class="product-container">
+                    <h3>Rekomendasi Jamu Lainnya</h3>
+                    <!-- Jamu 1 -->
+                    {% for result in top_5_results %}
+                        <div class="media mb-3">
+                            <img src="../static/jamu.png" class="mr-3" alt="Jamu 1" style="max-width: 100px;">
+                            <div class="media-body">
+                                <h5 class="mt-0">{{ result[2]['NAMA_JAMU'] }}</h5>
+                                <p>{{ result[2]['KHASIAT'] }}
+                                    <a href="/lihat_detail/{{result[0].split('_')[-1]}}" style="color: blue;">Lihat Detail...</a>
+                                </p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <!-- Jamu 2 -->
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

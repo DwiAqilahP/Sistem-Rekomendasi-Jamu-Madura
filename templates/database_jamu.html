@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Jamu</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            /* background-color: #8B8B8B; */
+            background-image: url('static/home4.png');
+            color: white; /* Teks putih untuk kontras */
+        }
+    
+        h2 {
+            text-align: center;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            /* color: blue; */
+        }
+    
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+    
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+    
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2; /* Warna latar belakang untuk baris genap */
+        }
+    
+        .btn {
+            color: white;
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+    
+        .btn:hover {
+            background-color: #0056b3; /* Warna tombol saat dihover */
+        }
+    
+        .pagination {
+            justify-content: center;
+        }
+    
+        .pagination .page-item .page-link {
+            color: #007bff;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+    
+        .pagination .page-item .page-link:hover {
+            background-color: #007bff;
+            color: white;
+        }
+    
+        .pagination .page-item.active .page-link {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+    </style>    
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <img src="static/jamu.png" width="50px"><a class="navbar-brand" href="/">SIRJaMa</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/database"><i class="fas fa-file-alt"></i> Database Jamu</a>
+                    </li>
+                    {% if 'username' in session %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/diskusi"><i class="fas fa-file-alt"></i> Diskusi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            
+        </div>
+    </nav>    
+  
+    <div class="container mt-4">
+        <h2>DATABASE JAMU MADURA</h2>
+        <!-- Tombol untuk menuju halaman tambah data -->
+        <a href="/tambah" class="btn btn-primary mb-3">Tambah Data Jamu</a>
+        <!-- Tabel untuk menampilkan data jamu -->
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">ID Jamu</th>
+                    <th scope="col">Nama Jamu</th>
+                    <th scope="col">Khasiat</th>
+                    <th scope="col">Kandungan</th>
+                    <!-- <th scope="col">Aturan Minum</th>
+                    <th scope="col">Efek Samping</th>
+                    <th scope="col">Jenis</th>
+                    <th scope="col">Produsen</th>
+                    <th scope="col">Lokasi Pemasaran</th>
+                    <th scope="col">Lokasi Produksi</th>
+                    <th scope="col">Kabupaten</th>
+                    <th scope="col">Perizinan</th> -->
+                    <th scope="col">Aksi</th>
+                </tr>
+            </thead>
+            <tbody style="background-color: white;">
+                {% for item in jamu %}
+                <tr>
+                    <td>{{ item.ID_JAMU}}</td>
+                    <td>{{ item.NAMA_JAMU }}</td>
+                    <td>{{ item.KHASIAT }}</td>
+                    <td>{{ item.KANDUNGAN }}</td>
+                    <!-- <td>{{ item.ATURAN_MINUM }}</td>
+                    <td>{{ item.EFEK_SAMPING }}</td>
+                    <td>{{ item.JENIS }}</td>
+                    <td>{{ item.PRODUSEN}}</td>
+                    <td>{{ item.LOKASI_PEMASARAN}}</td>
+                    <td>{{ item.LOKASI_PRODUKSI}}</td>
+                    <td>{{ item.KABUPATEN}}</td>
+                    <td>{{ item.PERIZINAN}}</td> -->
+                    <td>
+                        <form action="/lihat_detail1/{{ item.ID_JAMU }}" method="get">
+                            <button type="submit" class="btn" >lihat detail</button>
+                        </form>
+                        <!-- Tombol untuk mengedit data jamu -->
+                        <!-- <form action="/edit/{{ item.ID_JAMU }}" method="get">
+                            <button type="submit" class="btn btn-warning">Edit</button>
+                        </form> -->
+                        <!-- Tombol untuk menghapus data jamu -->
+                        <!-- <form action="/hapus/{{ item.ID_JAMU }}" method="get">
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </form> -->
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if page > 1 %}
+                <li class="page-item"><a class="page-link" href="?page={{ page-1 }}">Previous</a></li>
+                {% endif %}
+                {% for num in range(1, total_pages + 1) %}
+                <li class="page-item {% if num == page %}active{% endif %}"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endfor %}
+                {% if page < total_pages %}
+                <li class="page-item"><a class="page-link" href="?page={{ page+1 }}">Next</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Tambahkan script Bootstrap JS (jika diperlukan) -->
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+</body>
+</html>

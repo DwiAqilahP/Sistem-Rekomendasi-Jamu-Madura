@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diskusi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body{
+            background-image: url('static/home3.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .container {
+            width: 90%; /* Ubah lebar container menjadi persentase dari lebar layar */
+            max-width: 600px;
+            /* width: 50%; */
+            margin: 0 auto; /* Menengahkan container */
+            background-color: lightgrey;
+            padding: 20px; /* Menambahkan padding untuk estetika */
+            border-radius: 10px; /* Menambahkan radius sudut */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Menambahkan bayangan untuk efek kedalaman */
+            box-sizing: border-box; /* Menghitung padding dan border dalam perhitungan lebar */
+        }
+        textarea {
+            width: 100%; /* Agar textarea mengisi lebar container */
+            max-width: 100%; /* Batasi lebar maksimum */
+        }
+        .balas-form {
+            display: none; /* Sembunyikan formulir balasan secara default */
+        }
+        .pesan-container {
+            display: flex;
+            justify-content: flex-start; /* Default: align ke kiri */
+            flex-direction: column; /* Mengatur agar pesan balasan ditampilkan di atas */
+        }
+        .pesan-container.right {
+            justify-content: flex-end; /* Jika user adalah aqila, align ke kanan */
+            align-items: flex-end; /* Jika user adalah aqila, align teks ke kanan */
+        }
+        /* Gaya untuk pesan balasan yang di-blur */
+        .blurry {
+            color: grey;
+        }
+        /* Gaya untuk tombol balas pesan */
+        .balas-button {
+            width: 30px; /* Sesuaikan panjang tombol */
+            margin-top: 5px; /* Sesuaikan jarak atas */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="/" class="back-button"><i class="fas fa-arrow-left"></i> Kembali</a>
+        <h1>Ruang Diskusi</h1>
+        <hr>
+        <!-- Daftar diskusi -->
+        <ul>
+            {% for pesan in diskusi %}
+                <li class="pesan-container {% if pesan.username == current_user %}right{% endif %}">
+                    {% if pesan.id_balas_pesan %}
+                        {% for pesan_asli in diskusi %}
+                            {% if pesan_asli.id_diskusi == pesan.id_balas_pesan %}
+                            <div class="blurry">
+                                <!-- Tambahkan kelas "blurry" untuk membuat pesan balasan menjadi blur -->
+                                <strong>{{ pesan_asli.username }}</strong><br><span>{{ pesan_asli.isi_pesan }}</span>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <strong>{{ pesan.username }} ({{ pesan.tgl_pesan }}): </strong>{{ pesan.isi_pesan }}
+                    <button class="balas-button" onclick="Balas_Form('{{ pesan.id_diskusi }}')"><i class="fas fa-reply"></i></button>
+                    <!-- Formulir balasan -->
+                    <form method="POST" action="{{ url_for('hal_diskusi.diskusi') }}" class="balas-form" id="balas_form_{{ pesan.id_diskusi }}">
+                        <textarea name="isi_pesan" required></textarea>
+                        <input type="hidden" name="id_balas_pesan" value="{{ pesan.id_diskusi }}">
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+        <hr>
+        <form method="POST" action="{{ url_for('hal_diskusi.diskusi') }}">
+            <textarea id="isi_pesan" name="isi_pesan" rows="4" cols="50" placeholder="ketik pesan.." required></textarea><br>
+            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+        </form>
+
+        <script>
+            function Balas_Form(id_diskusi) {
+                var formId = 'balas_form_' + id_diskusi;
+                var form = document.getElementById(formId);
+                if (form.style.display === 'none') {
+                    form.style.display = 'block';
+                } else {
+                    form.style.display = 'none';
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>
