@@ -1,2 +1,2 @@
-Documentasi Sistem Rekomendasi Jamu Madura
+Dokumentasi Sistem Rekomendasi Jamu Madura
 Menggunakan Framework Flask
